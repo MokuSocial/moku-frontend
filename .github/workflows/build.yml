@@ -1,0 +1,51 @@
+name: Build Angular Project
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # needed to push later
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build -- --output-path=dist
+
+      - name: Deploy build branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Save build output if you prefer, but not necessary with the approach below
+          # ARTIFACTS_DIR="$(mktemp -d)"
+          # cp -r dist/* "$ARTIFACTS_DIR"/
+          git checkout --orphan build
+          # remove tracked files only; keep untracked like dist/
+          git rm -rf . || true
+
+          # copy build output into repo root
+          cp -r dist/* ./
+
+          # cleanup leftovers so they don't get committed
+          rm -rf dist node_modules
+
+          git add -A
+          git commit -m "Build from $GITHUB_SHA"
+          git push --force origin build
+
