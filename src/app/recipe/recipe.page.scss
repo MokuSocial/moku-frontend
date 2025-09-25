@@ -6,3 +6,24 @@
   border-bottom-right-radius: 18px;
   display: block;
 }
+
+.ingredients-grid {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.ingredient-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ingredient-name {
+  font-weight: 500;
+  margin-right: 8px;
+}
+.ingredient-quantity {
+  color: #666;
+}

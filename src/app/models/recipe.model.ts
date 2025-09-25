@@ -3,8 +3,9 @@ export interface Recipe {
   title: string;
   description: string;
   imageUrl?: string;
-  ingredients: { name: string; quantity: string; }[];
-  steps: string[];
+  servings: number;
+  ingredients: Ingredient[];
+  steps: RecipeStep[];
   author: {
     id: string;
     name: string;
@@ -13,4 +14,15 @@ export interface Recipe {
   createdAt: string; // ISO date string
   tags?: string[];
   likes?: number;
+}
+
+export interface Ingredient {
+  name: string;
+  quantity: number;
+  unit: string;
+}
+
+export interface RecipeStep {
+  text: string;
+  imageUrl?: string;
 }

@@ -1,1 +1,58 @@
-<img [src]="recipe.imageUrl" class="recipe-banner" alt="Recipe cover" />
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Tab 1 </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- 1. Banner -->
+  <img [src]="recipe.imageUrl" class="recipe-banner" alt="Recipe cover" />
+
+  <!-- 2. Title -->
+  <h1 class="recipe-title">{{ recipe.title }}</h1>
+
+  <!-- 3. Ingredients Grid -->
+  <div class="ingredients-grid">
+    @for(column of splitIngredients(scaledIngredients, 5); track $index) {
+    <div class="ingredient-column">
+      @for(ingredient of column; track $index){
+      <div class="ingredient">
+        <span class="ingredient-name">{{ ingredient.name }}</span>
+        <span class="ingredient-quantity">{{ ingredient.quantity }}</span>
+        <span class="ingredient-quantity">{{ ingredient.unit }}</span>
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <!-- 4. People Selector -->
+  <ion-item>
+    <ion-label>Servings</ion-label>
+    <ion-input
+      type="number"
+      min="1"
+      [(ngModel)]="peopleCount"
+      (ionChange)="onPeopleCountChange($event)"
+    ></ion-input>
+  </ion-item>
+
+  <!-- 5. Separator -->
+  <hr class="section-separator" />
+
+  <!-- 6. Steps List -->
+  <div class="steps-list">
+    @for(step of recipe.steps; track $index) {
+    <div class="step">
+      <div class="step-index">{{ $index + 1 }}.</div>
+      <div class="step-description">{{ step.text }}</div>
+      <img
+        *ngIf="step.imageUrl"
+        [src]="step.imageUrl"
+        class="step-image"
+        alt="Step image"
+      />
+    </div>
+    }
+  </div>
+</ion-content>
