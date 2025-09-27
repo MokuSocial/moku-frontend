@@ -11,12 +11,9 @@ import { FormsModule } from '@angular/forms';
 import { InputChangeEventDetail, InputCustomEvent } from '@ionic/angular';
 import {
   IonContent,
-  IonHeader,
   IonInput,
   IonItem,
   IonLabel,
-  IonTitle,
-  IonToolbar,
 } from '@ionic/angular/standalone';
 import { Ingredient, Recipe } from '../models/recipe.model';
 import { RecipeService } from '../services/recipe.service';
@@ -25,16 +22,7 @@ import { RecipeService } from '../services/recipe.service';
   selector: 'app-recipe',
   templateUrl: 'recipe.page.html',
   styleUrls: ['recipe.page.scss'],
-  imports: [
-    IonInput,
-    IonLabel,
-    IonItem,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    FormsModule,
-  ],
+  imports: [IonInput, IonLabel, IonItem, IonContent, FormsModule],
 })
 export class RecipePage {
   private readonly recipeService = inject(RecipeService);

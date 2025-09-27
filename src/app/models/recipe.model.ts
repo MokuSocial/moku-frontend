@@ -1,3 +1,10 @@
+export interface ApiResult {
+  page: number;
+  results: Recipe[];
+  total_pages: number;
+  total_results: number;
+}
+
 export interface Recipe {
   id: string;
   title: string;
@@ -15,6 +22,7 @@ export interface Recipe {
   createdAt: string; // ISO date string
   tags?: string[];
   likes?: number;
+  vote_average: number;
 }
 
 export interface Ingredient {

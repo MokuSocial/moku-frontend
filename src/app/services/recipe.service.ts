@@ -1,24 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { Recipe } from '../models/recipe.model';
 import { Observable } from 'rxjs/internal/Observable';
-import { of } from 'rxjs';
+import { of } from 'rxjs/internal/observable/of';
+import { environment } from 'src/environments/environment';
+import { ApiResult, Recipe } from '../models/recipe.model';
 
-const BASE_URL = 'https://api.themoviedb.org/3';
-// const API_KEY = environment.apiKey;
+const BASE_URL = '';
+const API_KEY = environment.apiKey;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RecipeService {
   private http = inject(HttpClient);
 
   constructor() {}
 
-  getRecipes(): Observable<Recipe[]> {
+  getRecipes(page = 1): Observable<ApiResult> {
     // Placeholder for actual API call
-    return of([]); // Replace with actual HTTP call
+    return of({
+      page: 1,
+      results: [dummyRecipe],
+      total_pages: 1,
+      total_results: 1,
+    }); // Replace with actual HTTP call
   }
 
   getRecipeById(id: string): Observable<Recipe> {
@@ -26,7 +31,6 @@ export class RecipeService {
     return of(dummyRecipe); // Replace with actual HTTP call
   }
 }
-
 
 const dummyRecipe: Recipe = {
   id: '1',
@@ -67,4 +71,5 @@ const dummyRecipe: Recipe = {
       imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
     },
   ],
+  vote_average: 4.5,
 };
