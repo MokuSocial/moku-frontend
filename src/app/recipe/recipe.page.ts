@@ -1,11 +1,25 @@
-import { Component, computed, inject, Input, OnInit, Signal, signal, WritableSignal } from '@angular/core';
-import { InputCustomEvent, InputChangeEventDetail } from '@ionic/angular';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonInput } from '@ionic/angular/standalone';
-import { ExploreContainerComponent } from '../explore-container/explore-container.component';
-import { Ingredient, Recipe } from '../models/recipe.model';
+import {
+  Component,
+  computed,
+  inject,
+  Input,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { InputChangeEventDetail, InputCustomEvent } from '@ionic/angular';
+import {
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
+import { Ingredient, Recipe } from '../models/recipe.model';
 import { RecipeService } from '../services/recipe.service';
-
 
 @Component({
   selector: 'app-recipe',
@@ -20,46 +34,34 @@ import { RecipeService } from '../services/recipe.service';
     IonTitle,
     IonContent,
     FormsModule,
-    ExploreContainerComponent,
   ],
 })
-export class RecipePage implements OnInit {
-  private recipeService = inject(RecipeService);
+export class RecipePage {
+  private readonly recipeService = inject(RecipeService);
   public recipe: WritableSignal<Recipe | null> = signal(null);
-  public peopleCount: Signal<number> = computed(() => this.recipe()?.servings ?? 0 * 2);
+  public peopleCount: WritableSignal<number> = signal(
+    this.recipe()?.servings ?? 0
+  );
+  public scaledIngredients: Signal<Ingredient[]> = computed(() => {
+    const localRecipe = this.recipe();
+    if (!localRecipe) return [];
+    return localRecipe.ingredients.map((ingredient) => ({
+      ...ingredient,
+      quantity:
+        (ingredient.quantity * this.peopleCount()) / localRecipe.servings,
+    }));
+  });
 
-  
+  public ingredientColumns: Signal<Ingredient[][]> = computed(() => {
+    return this.splitIngredients(this.scaledIngredients(), 5);
+  });
+
   @Input()
   set id(recipeId: string) {
     this.recipeService.getRecipeById(recipeId).subscribe((recipe) => {
       this.recipe.set(recipe);
+      this.peopleCount.set(recipe.servings);
     });
-  }
-
-  
-
-  ingredientColumns: Ingredient[][] = [];
-
-  ngOnInit() {
-    this.getRecipeById("sa");
-  }
-
-  async getRecipeById(id: string) {
-    this.recipeService.getRecipeById(id).subscribe((recipe) => {
-      this.recipe = recipe;
-      this.peopleCount = this.recipe.servings;
-      this.ingredientColumns = this.splitIngredients(this.recipe.ingredients, 5);
-    });
-  }
-
-  get scaledIngredients(): Ingredient[] {
-    const test = this.recipe.ingredients.map((ingredient) => ({
-      ...ingredient,
-      quantity:
-        (ingredient.quantity * this.peopleCount) / this.recipe.servings,
-    }));
-    console.log('Scaled Ingredients:', test); 
-    return test;
   }
 
   splitIngredients(ingredients: Ingredient[], columnSize: number) {
@@ -71,14 +73,12 @@ export class RecipePage implements OnInit {
   }
 
   onPeopleCountChange(event: InputCustomEvent<InputChangeEventDetail>) {
-    // This can be empty if you use the getter above, or use to trigger recalculation
     const inputValue = event.target.value;
-    console.log('People count changed:', inputValue);
-    if (typeof inputValue === 'number') this.peopleCount = inputValue;
+    if (typeof inputValue === 'number') this.peopleCount.set(inputValue);
     else
-      this.peopleCount = inputValue
-        ? parseInt(inputValue, 10)
-        : this.peopleCount;
+      this.peopleCount.update((value) =>
+        inputValue ? parseInt(inputValue, 10) : value
+      );
   }
 
   constructor() {}
