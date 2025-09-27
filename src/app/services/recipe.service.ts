@@ -35,8 +35,7 @@ export class RecipeService {
 const dummyRecipe: Recipe = {
   id: '1',
   title: 'Classic Pancakes',
-  description: 'Fluffy pancakes for a perfect breakfast.',
-  imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
+  bannerUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
   servings: 4,
   ingredients: [
     { name: 'Flour', quantity: 200, unit: 'g' },
@@ -56,8 +55,6 @@ const dummyRecipe: Recipe = {
     name: 'Jane Doe',
     avatarUrl: 'https://randomuser.me/api/portraits/women/1.jpg',
   },
-  createdAt: '2025-09-25T10:00:00Z',
-  tags: ['breakfast', 'easy', 'sweet'],
   steps: [
     { text: 'Mix flour, sugar, and salt in a bowl.' },
     {

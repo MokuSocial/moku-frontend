@@ -8,8 +8,7 @@ export interface ApiResult {
 export interface Recipe {
   id: string;
   title: string;
-  description: string;
-  imageUrl?: string;
+  bannerUrl: string;
   servings: number;
   ingredients: Ingredient[];
   indications: Indication[];
@@ -17,11 +16,8 @@ export interface Recipe {
   author: {
     id: string;
     name: string;
-    avatarUrl?: string;
+    avatarUrl: string;
   };
-  createdAt: string; // ISO date string
-  tags?: string[];
-  likes?: number;
   vote_average: number;
 }
 

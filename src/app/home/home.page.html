@@ -10,7 +10,7 @@
     @for (item of recipes; track item.id) {
     <ion-item button [routerLink]="['/recipe', item.id]">
       <ion-avatar slot="start">
-        <img [src]="item.imageUrl" alt="recipe {{item.id}} background" />
+        <img [src]="item.bannerUrl" alt="recipe {{item.id}} background" />
       </ion-avatar>
 
       <ion-label class="ion-text-wrap">
