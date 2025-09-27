@@ -3,19 +3,37 @@
 
   <h1 class="recipe-title">{{ recipe()?.title }}</h1>
 
-  <div class="ingredients-grid">
-    @for(column of ingredientColumns(); track $index) {
-    <div class="ingredient-column">
-      @for(ingredient of column; track $index){
-      <div class="ingredient">
-        <span class="ingredient-name">{{ ingredient.name }}</span>
-        <span class="ingredient-quantity">{{ ingredient.quantity }}</span>
-        <span class="ingredient-quantity">{{ ingredient.unit }}</span>
-      </div>
+  <div class="ingredients-indications-row">
+  <!-- Ingredients column -->
+  <div class="ingredients-col">
+    <h2>Ingredients</h2>
+    <div class="ingredients-grid">
+      @for(column of ingredientColumns(); track $index) {
+        <div class="ingredient-column">
+          @for (ingredient of column; track ingredient) {
+            <div class="ingredient">
+              <span class="ingredient-name">{{ ingredient.name }}</span>
+              <span class="ingredient-quantity">
+                {{ ingredient.quantity }}{{ ingredient.unit }}
+              </span>
+            </div>
+          }
+        </div>
       }
     </div>
-    }
   </div>
+  <!-- Indications column -->
+  <div class="indications-col">
+    <h2>Indications</h2>
+    <ul class="indications-list">
+      @for (indication of recipe()?.indications; track indication) {
+        <li>
+          <strong>{{ indication.label }}:</strong> {{ indication.value }}
+        </li>
+      }
+    </ul>
+  </div>
+</div>
 
   <ion-item>
     <ion-label>Servings</ion-label>
@@ -35,9 +53,10 @@
       <div class="step-index">{{ $index + 1 }}.</div>
       <div class="step-description">{{ step.text }}</div>
       @if (step.imageUrl) {
-      <img [src]="step.imageUrl" class="step-image" alt="Step" />
+      <img [src]="step.imageUrl" class="step-image" alt="step {{$index+1}}" />
       }
     </div>
     }
   </div>
+
 </ion-content>

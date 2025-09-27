@@ -29,31 +29,42 @@ export class RecipeService {
 
 
 const dummyRecipe: Recipe = {
-    id: '1',
-    title: 'Classic Pancakes',
-    description: 'Fluffy pancakes for a perfect breakfast.',
-    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
-    servings: 4,
-    ingredients: [
-      { name: 'Flour', quantity: 200, unit: 'g' },
-      { name: 'Eggs', quantity: 2, unit: '' },
-      { name: 'Milk', quantity: 300, unit: 'ml' },
-      { name: 'Sugar', quantity: 50, unit: 'g' },
-      { name: 'Salt', quantity: 1, unit: 'tsp' },
-      { name: 'Butter', quantity: 30, unit: 'g' },
-    ],
-    author: {
-      id: 'u1',
-      name: 'Jane Doe',
-      avatarUrl: 'https://randomuser.me/api/portraits/women/1.jpg',
+  id: '1',
+  title: 'Classic Pancakes',
+  description: 'Fluffy pancakes for a perfect breakfast.',
+  imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
+  servings: 4,
+  ingredients: [
+    { name: 'Flour', quantity: 200, unit: 'g' },
+    { name: 'Eggs', quantity: 2, unit: '' },
+    { name: 'Milk', quantity: 300, unit: 'ml' },
+    { name: 'Sugar', quantity: 50, unit: 'g' },
+    { name: 'Salt', quantity: 1, unit: 'tsp' },
+    { name: 'Butter', quantity: 30, unit: 'g' },
+  ],
+  indications: [
+    { label: 'Cooking time', value: '15 min' },
+    { label: 'Overall time', value: '25 min' },
+    { label: 'Rest time', value: '5 min' },
+  ],
+  author: {
+    id: 'u1',
+    name: 'Jane Doe',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/1.jpg',
+  },
+  createdAt: '2025-09-25T10:00:00Z',
+  tags: ['breakfast', 'easy', 'sweet'],
+  steps: [
+    { text: 'Mix flour, sugar, and salt in a bowl.' },
+    {
+      text: 'Add eggs and milk, whisk until smooth.',
+      imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
     },
-    createdAt: '2025-09-25T10:00:00Z',
-    tags: ['breakfast', 'easy', 'sweet'],
-    steps: [
-      { text: 'Mix flour, sugar, and salt in a bowl.' },
-      { text: 'Add eggs and milk, whisk until smooth.' },
-      { text: 'Melt butter in a pan and pour batter.' },
-      { text: 'Cook until golden, then flip and finish.' },
-      { text: 'Serve hot with toppings of your choice.' },
-    ],
-  };
+    { text: 'Melt butter in a pan and pour batter.' },
+    { text: 'Cook until golden, then flip and finish.' },
+    {
+      text: 'Serve hot with toppings of your choice.',
+      imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
+    },
+  ],
+};

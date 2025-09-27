@@ -5,6 +5,7 @@ export interface Recipe {
   imageUrl?: string;
   servings: number;
   ingredients: Ingredient[];
+  indications: Indication[];
   steps: RecipeStep[];
   author: {
     id: string;
@@ -20,6 +21,11 @@ export interface Ingredient {
   name: string;
   quantity: number;
   unit: string;
+}
+
+export interface Indication {
+  label: string;
+  value: string;
 }
 
 export interface RecipeStep {
