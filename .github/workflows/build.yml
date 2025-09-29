@@ -40,7 +40,7 @@ jobs:
           git rm -rf . || true
 
           # copy build output into repo root
-          cp -r dist/* ./
+          cp -r dist/browser/* ./
 
           # cleanup leftovers so they don't get committed
           rm -rf dist node_modules
