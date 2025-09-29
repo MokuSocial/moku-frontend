@@ -25,7 +25,7 @@ jobs:
         run: npm ci
 
       - name: Build project
-        run: npm run build -- --output-path=dist
+        run: npm run build -- --base-href "/moku-frontend/"
 
       - name: Deploy build branch
         run: |
@@ -38,9 +38,8 @@ jobs:
           git checkout --orphan build
           # remove tracked files only; keep untracked like dist/
           git rm -rf . || true
-
           # copy build output into repo root
-          cp -r dist/browser/* ./
+          cp -r www/* ./
 
           # cleanup leftovers so they don't get committed
           rm -rf dist node_modules
