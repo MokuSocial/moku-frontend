@@ -1,30 +1,30 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Recipe List </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  @defer (when !isLoading) {
-  <ion-list class="ion-padding-top">
-    @for (item of recipes; track item.id) {
-    <ion-item button [routerLink]="['/recipe', item.id]">
-      <ion-avatar slot="start">
-        <img [src]="item.bannerUrl" alt="recipe {{item.id}} background" />
-      </ion-avatar>
-
-      <ion-label class="ion-text-wrap">
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.author.name }}</p>
-      </ion-label>
-
-      <ion-badge slot="end"> {{ item.vote_average }} </ion-badge>
-    </ion-item>
-    } @empty { @if (!isLoading) {
-    <ion-item lines="none">
-      <ion-label class="ion-text-center">No recipe found</ion-label>
-    </ion-item>
-    } }
+  @defer {
+  <ion-list lines="none">
+    <div class="container">
+      @for (item of recipes; track item.id) {
+      <ion-card button [routerLink]="['/recipe', item.id]" class="recipe-card">
+        <ion-img [src]="item.bannerUrl" class="card-bg" />
+        <div class="overlay">
+          <div class="top-row">
+            <div class="stars-badge">
+              @for(star of this.getStars(item.vote_average); track $index){
+              <ion-icon [name]="star" class="star"></ion-icon>
+              }
+            </div>
+          </div>
+          <div class="bottom-row">
+            <ion-text class="ion-text-start">
+              <h3>{{ item.title }}</h3>
+            </ion-text>
+            <ion-text class="ion-text-end">
+              <p>{{ item.author.name }}</p>
+            </ion-text>
+          </div>
+        </div>
+      </ion-card>
+      }
+    </div>
   </ion-list>
 
   <ion-infinite-scroll (ionInfinite)="loadMore($event)">
@@ -34,15 +34,17 @@
     />
   </ion-infinite-scroll>
   } @placeholder {
-  <ion-list class="ion-padding-top">
-    @for (i of range(5); track i) {
-    <ion-item lines="none" class="ion-padding-bottom">
-      <ion-avatar slot="start">
-        <ion-skeleton-text></ion-skeleton-text>
-      </ion-avatar>
-      <ion-skeleton-text animated style="height: 40px" />
-    </ion-item>
-    }
+  <ion-list lines="none">
+    <div class="container">
+      @for (i of range(10); track i) {
+      <ion-item lines="none" class="ion-padding-bottom">
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-skeleton-text animated style="height: 40px" />
+      </ion-item>
+      }
+    </div>
   </ion-list>
   } @error {
   <ion-alert
@@ -50,6 +52,18 @@
     [message]="error"
     isOpen="true"
     [buttons]="['Ok']"
-  />
-  } @loading(minimum 2s) { Transition to list.... }
+  />} @loading {
+  <ion-list class="ion-padding-top">
+    <div class="container">
+      @for (i of range(5); track i) {
+      <ion-item lines="none" class="ion-padding-bottom">
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-skeleton-text animated style="height: 40px" />
+      </ion-item>
+      }
+    </div>
+  </ion-list>
+  }
 </ion-content>

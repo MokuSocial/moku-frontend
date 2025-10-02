@@ -4,44 +4,43 @@ import {
   InfiniteScrollCustomEvent,
   IonAlert,
   IonAvatar,
-  IonBadge,
+  IonCard,
   IonContent,
-  IonHeader,
+  IonIcon,
   IonImg,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonItem,
-  IonLabel,
   IonList,
   IonSkeletonText,
-  IonTitle,
-  IonToolbar,
+  IonText,
 } from '@ionic/angular/standalone';
 import { catchError, finalize } from 'rxjs';
 import { Recipe } from '../models/recipe.model';
 import { RecipeService } from '../services/recipe.service';
 import { range } from '../utils';
 
+import { addIcons } from 'ionicons';
+import { star, starHalf, starOutline } from 'ionicons/icons';
+
 @Component({
   selector: 'app-home',
-  templateUrl: 'home2.page.html',
+  templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   imports: [
-    IonBadge,
     IonInfiniteScrollContent,
     IonInfiniteScroll,
-    IonLabel,
     IonAlert,
     IonSkeletonText,
     IonAvatar,
     IonList,
     IonItem,
     IonImg,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
+    IonIcon,
     IonContent,
     RouterModule,
+    IonCard,
+    IonText,
   ],
 })
 export class HomePage {
@@ -55,6 +54,7 @@ export class HomePage {
   id = 1;
   constructor() {
     this.loadRecipes();
+    addIcons({ star, starHalf, starOutline });
   }
 
   range = range;
@@ -67,7 +67,7 @@ export class HomePage {
       this.isLoading = true;
     }
 
-    // Get the next page of movies from the MovieService
+    // Get the next page of recipes from the RecipeService
     this.recipeService
       .getRecipes(this.currentPage)
       .pipe(
@@ -81,7 +81,7 @@ export class HomePage {
       )
       .subscribe({
         next: (res) => {
-          // Append the results to our movies array
+          // Append the results to our recipes array
           this.recipes.push(...res.results);
 
           // Resolve the infinite scroll promise to tell Ionic that we are done
@@ -99,5 +99,22 @@ export class HomePage {
   loadMore(event: InfiniteScrollCustomEvent) {
     this.currentPage++;
     this.loadRecipes(event);
+  }
+
+  getStars(vote: number): string[] {
+    const stars: string[] = [];
+    const rating = Math.round(vote * 2) / 2;
+
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars.push('star');
+      } else if (i - 0.5 === rating) {
+        stars.push('star-half');
+      } else {
+        stars.push('star-outline');
+      }
+    }
+
+    return stars;
   }
 }
