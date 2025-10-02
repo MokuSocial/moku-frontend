@@ -7,6 +7,7 @@ import {
   IonBadge,
   IonContent,
   IonHeader,
+  IonImg,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonItem,
@@ -23,7 +24,7 @@ import { range } from '../utils';
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
+  templateUrl: 'home2.page.html',
   styleUrls: ['home.page.scss'],
   imports: [
     IonBadge,
@@ -35,6 +36,7 @@ import { range } from '../utils';
     IonAvatar,
     IonList,
     IonItem,
+    IonImg,
     IonHeader,
     IonToolbar,
     IonTitle,

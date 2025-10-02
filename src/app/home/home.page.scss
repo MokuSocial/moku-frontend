@@ -1,27 +1,13 @@
-#container {
-  text-align: center;
+.bg-image {
+  // background-image: url("https://fastly.picsum.photos/id/862/1280/960.jpg?hmac=hO72Finv8xtmEjMZSwPAoGuOavkWOjBDxXqASqJBsPw");
+  margin: 16px;
+  padding: 4px;
+  // background-position: center center;
+}
 
+.bg-img {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+  max-width: 100%;
+  max-height: 100%;
+  z-index: -1;
 }

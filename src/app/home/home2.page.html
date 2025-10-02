@@ -1,0 +1,21 @@
+<ion-content>
+  @defer {
+  <ion-list class="ion-padding-top">
+    @for (item of recipes; track item.id) {
+    <ion-item button class="bg-image">
+      <ion-img [src]="item.bannerUrl" class="bg-img" />
+      <ion-label class="ion-text-wrap">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.author.name }}</p>
+      </ion-label>
+    </ion-item>
+    <!-- <ion-item class="bg-image" button>
+    <ion-label class="ion-text-wrap">
+      <h3>{{ item.title }}</h3>
+      <p>{{ item.author.name }}</p>
+    </ion-label>
+  </ion-item> -->
+    }
+  </ion-list>
+  } @placeholder { } @error { } @loading { }
+</ion-content>
