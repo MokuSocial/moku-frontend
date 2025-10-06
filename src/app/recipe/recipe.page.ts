@@ -14,6 +14,7 @@ import {
   IonInput,
   IonItem,
   IonLabel,
+  IonText,
 } from '@ionic/angular/standalone';
 import { Ingredient, Recipe } from '../models/recipe.model';
 import { RecipeService } from '../services/recipe.service';
@@ -22,7 +23,7 @@ import { RecipeService } from '../services/recipe.service';
   selector: 'app-recipe',
   templateUrl: 'recipe.page.html',
   styleUrls: ['recipe.page.scss'],
-  imports: [IonInput, IonLabel, IonItem, IonContent, FormsModule],
+  imports: [IonText, IonInput, IonLabel, IonItem, IonContent, FormsModule],
 })
 export class RecipePage {
   private readonly recipeService = inject(RecipeService);

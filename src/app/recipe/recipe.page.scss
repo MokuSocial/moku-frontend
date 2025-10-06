@@ -1,6 +1,6 @@
 .recipe-banner {
   width: 100%;
-  height: 220px;
+  max-height: 300px;
   object-fit: cover;
   border-bottom-left-radius: 18px;
   border-bottom-right-radius: 18px;
@@ -11,8 +11,15 @@
   font-size: 2rem;
   font-weight: 700;
   margin: 20px 0 16px 0;
-  text-align: center;
   letter-spacing: 0.5px;
+}
+
+.ingredients-indications-row {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+  align-items: flex-start;
+  justify-content: space-around;
 }
 
 .ingredients-grid {
@@ -21,46 +28,74 @@
   justify-content: center;
   margin-bottom: 16px;
 }
-.ingredient-column {
+
+// .ingredients-list {
+//   display: flex;
+//   flex-direction: column;
+//   max-height: 200px;
+//   gap: 8px;
+//   flex-wrap: wrap;
+// }
+
+// .ingredient-column {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 8px;
+// }
+
+// .ingredient-name {
+//   font-weight: 500;
+//   margin-right: 8px;
+// }
+// .ingredient-quantity {
+//   color: #666;
+// }
+
+// .ingredients-section {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center; /* centers the content horizontally */
+// }
+
+.ingredients-col {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center; /* centers the content horizontally */
+}
+
+.ingredients-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 24px; /* row-gap | column-gap */
+  max-width: 600px; /* optional, for better alignment on large screens */
+  margin-top: 12px;
+}
+
+.ingredient {
+  display: flex;
+  align-items: baseline;
+  min-width: 200px; /* helps create consistent wrapping */
 }
 
 .ingredient-name {
   font-weight: 500;
   margin-right: 8px;
 }
+
 .ingredient-quantity {
-  color: #666;
-}
-.ingredients-indications-row {
-  display: flex;
-  gap: 32px;
-  margin-bottom: 24px;
-  align-items: flex-start;
+  color: var(--ion-color-medium);
 }
 
-.ingredients-col,
-.indications-col {
-  flex: 1;
-}
+// .indications-list {
+//   list-style: none;
+//   padding: 0;
+//   margin: 0;
+// }
 
-.ingredients-col h2,
-.indications-col h2 {
-  margin-bottom: 16px;
-  font-size: 1.2rem;
-}
-
-.indications-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.indications-list li {
-  margin-bottom: 12px;
-}
+// .indications-list li {
+//   margin-bottom: 12px;
+// }
 
 .steps-list {
   margin-top: 24px;
