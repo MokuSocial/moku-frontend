@@ -56,7 +56,7 @@ export function generateRecipe(): Recipe {
     }),
     servings: faker.number.int({ min: 2, max: 4 }),
     ingredients: Array.from(
-      { length: faker.number.int({ min: 20, max: 20 }) },
+      { length: faker.number.int({ min: 7, max: 10 }) },
       generateIngredient
     ),
     indications: Array.from(

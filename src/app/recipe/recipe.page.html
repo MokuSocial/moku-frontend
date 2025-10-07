@@ -8,7 +8,7 @@
     <!-- Ingredients column -->
     <div class="ingredients-col">
       <h2>Ingredients</h2>
-      <!-- <div class="ingredients-grid">
+      <div class="ingredients-grid">
         @for(column of ingredientColumns(); track $index) {
         <div class="ingredient-column">
           @for (ingredient of column; track ingredient) {
@@ -19,16 +19,6 @@
             </span>
           </div>
           }
-        </div>
-        }
-      </div> -->
-      <div class="ingredients-list">
-        @for(ingredient of scaledIngredients(); track $index) {
-        <div class="ingredient">
-          <span class="ingredient-name">{{ ingredient.name }}</span>
-          <span class="ingredient-quantity">
-            {{ ingredient.quantity }}{{ ingredient.unit }}
-          </span>
         </div>
         }
       </div>

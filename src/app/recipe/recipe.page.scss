@@ -16,66 +16,31 @@
 
 .ingredients-indications-row {
   display: flex;
-  gap: 32px;
-  margin-bottom: 24px;
   align-items: flex-start;
   justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-bottom: 24px;
 }
 
 .ingredients-grid {
   display: flex;
-  gap: 16px;
+  gap: 24px;
   justify-content: center;
   margin-bottom: 16px;
 }
 
-// .ingredients-list {
-//   display: flex;
-//   flex-direction: column;
-//   max-height: 200px;
-//   gap: 8px;
-//   flex-wrap: wrap;
-// }
-
-// .ingredient-column {
-//   display: flex;
-//   flex-direction: column;
-//   gap: 8px;
-// }
-
-// .ingredient-name {
-//   font-weight: 500;
-//   margin-right: 8px;
-// }
-// .ingredient-quantity {
-//   color: #666;
-// }
-
-// .ingredients-section {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center; /* centers the content horizontally */
-// }
-
 .ingredients-col {
   display: flex;
   flex-direction: column;
-  align-items: center; /* centers the content horizontally */
-}
-
-.ingredients-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px 24px; /* row-gap | column-gap */
-  max-width: 600px; /* optional, for better alignment on large screens */
-  margin-top: 12px;
+  align-items: center;
+  margin: 0 16px;
 }
 
 .ingredient {
   display: flex;
   align-items: baseline;
-  min-width: 200px; /* helps create consistent wrapping */
+  justify-content: space-between;
 }
 
 .ingredient-name {
