@@ -44,7 +44,7 @@ import { star, starHalf, starOutline } from 'ionicons/icons';
   ],
 })
 export class HomePage {
-  private recipeService = inject(RecipeService);
+  private readonly recipeService = inject(RecipeService);
   private currentPage: number = 1;
   public error = null;
   public isLoading = false;
