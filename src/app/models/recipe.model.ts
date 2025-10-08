@@ -6,30 +6,31 @@ export interface ApiResult {
 }
 
 export interface Recipe {
-  id: string;
+  id: number;
   title: string;
   bannerUrl: string;
   servings: number;
   ingredients: Ingredient[];
-  indications: Indication[];
+  indications: {
+    // in minutes
+    prepTime: number;
+    cookTime: number;
+    restTime?: number;
+    difficulty: 'easy' | 'medium' | 'hard';
+  };
   steps: RecipeStep[];
   author: {
     id: string;
     name: string;
     avatarUrl: string;
   };
-  vote_average: number;
+  voteAverage: number;
 }
 
 export interface Ingredient {
   name: string;
   quantity: number;
   unit: string;
-}
-
-export interface Indication {
-  label: string;
-  value: string;
 }
 
 export interface RecipeStep {

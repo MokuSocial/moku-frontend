@@ -1,3 +1,4 @@
+import { KeyValuePipe } from '@angular/common';
 import {
   Component,
   computed,
@@ -9,13 +10,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputChangeEventDetail, InputCustomEvent } from '@ionic/angular';
-import {
-  IonContent,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonText,
-} from '@ionic/angular/standalone';
+import { IonContent, IonInput, IonText } from '@ionic/angular/standalone';
 import { Ingredient, Recipe } from '../models/recipe.model';
 import { RecipeService } from '../services/recipe.service';
 
@@ -23,7 +18,7 @@ import { RecipeService } from '../services/recipe.service';
   selector: 'app-recipe',
   templateUrl: 'recipe.page.html',
   styleUrls: ['recipe.page.scss'],
-  imports: [IonText, IonInput, IonLabel, IonItem, IonContent, FormsModule],
+  imports: [IonText, IonInput, IonContent, FormsModule, KeyValuePipe],
 })
 export class RecipePage {
   private readonly recipeService = inject(RecipeService);
@@ -68,6 +63,22 @@ export class RecipePage {
       this.peopleCount.update((value) =>
         inputValue ? parseInt(inputValue, 10) : value
       );
+  }
+
+  // 'prepTime' | 'cookTime' | 'difficulty' | 'restTime'
+  mapIndications(key: string) {
+    switch (key) {
+      case 'prepTime':
+        return 'Preparazione';
+      case 'cookTime':
+        return 'Cottura';
+      case 'difficulty':
+        return 'Difficoltà';
+      case 'restTime':
+        return 'Riposo';
+      default:
+        return 'Label';
+    }
   }
 
   constructor() {}

@@ -29,7 +29,7 @@ export class RecipeService {
 }
 
 const dummyRecipe: Recipe = {
-  id: '1',
+  id: 1,
   title: 'Classic Pancakes',
   bannerUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
   servings: 4,
@@ -41,11 +41,17 @@ const dummyRecipe: Recipe = {
     { name: 'Salt', quantity: 1, unit: 'tsp' },
     { name: 'Butter', quantity: 30, unit: 'g' },
   ],
-  indications: [
-    { label: 'Cooking time', value: '15 min' },
-    { label: 'Overall time', value: '25 min' },
-    { label: 'Rest time', value: '5 min' },
-  ],
+  indications: {
+    cookTime: 15,
+    difficulty: 'easy',
+    prepTime: 5,
+  },
+  // [
+  //   { label: 'Cooking time', value: '15 min' },
+  //   { label: 'Overall time', value: '25 min' },
+  //   { label: 'Rest time', value: '5 min' },
+
+  // ],
   author: {
     id: 'u1',
     name: 'Jane Doe',
@@ -64,5 +70,5 @@ const dummyRecipe: Recipe = {
       imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
     },
   ],
-  vote_average: 4.5,
+  voteAverage: 4.5,
 };

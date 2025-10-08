@@ -28,10 +28,13 @@
       <div class="indications-col">
         <h2>Indications</h2>
         <div class="indications-list">
-          @for (indication of recipe.indications; track indication) {
+          @for (keypar of recipe.indications|keyvalue; track keypar.key) {
           <div class="indication">
-            <span>{{ indication.label }}: </span>
-            <ion-text color="medium">{{ indication.value }}</ion-text>
+            <span>{{ mapIndications(keypar.key)}}: </span>
+            <ion-text color="medium"
+              >{{ keypar.value }} {{keypar.key == "difficulty" ? "": "min"
+              }}</ion-text
+            >
           </div>
           }
         </div>
