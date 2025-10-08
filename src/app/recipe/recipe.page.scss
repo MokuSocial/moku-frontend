@@ -17,9 +17,9 @@
 .ingredients-indications-row {
   display: flex;
   align-items: flex-start;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 32px;
+  gap: 32px 128px;
   margin-bottom: 24px;
 }
 
@@ -30,17 +30,20 @@
   margin-bottom: 16px;
 }
 
-.ingredients-col {
+.ingredients-col,
+.indications-col {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 16px;
 }
 
-.ingredient {
+.ingredient,
+.indication {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  gap: 4px;
 }
 
 .ingredient-name {
@@ -48,19 +51,12 @@
   margin-right: 8px;
 }
 
-.ingredient-quantity {
-  color: var(--ion-color-medium);
+.indications-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
 }
-
-// .indications-list {
-//   list-style: none;
-//   padding: 0;
-//   margin: 0;
-// }
-
-// .indications-list li {
-//   margin-bottom: 12px;
-// }
 
 .steps-list {
   margin-top: 24px;
