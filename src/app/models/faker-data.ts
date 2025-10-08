@@ -1,11 +1,5 @@
 import { faker } from '@faker-js/faker';
-import {
-  ApiResult,
-  Recipe,
-  Ingredient,
-  Indication,
-  RecipeStep,
-} from './recipe.model';
+import { ApiResult, Recipe, Ingredient, RecipeStep } from './recipe.model';
 
 function generateIngredient(): Ingredient {
   return {
@@ -20,13 +14,6 @@ function generateIngredient(): Ingredient {
       'tsp',
       'cup',
     ]),
-  };
-}
-
-function generateIndication(): Indication {
-  return {
-    label: faker.lorem.word(),
-    value: faker.lorem.word(),
   };
 }
 
@@ -46,7 +33,7 @@ function generateStep(): RecipeStep {
 
 export function generateRecipe(): Recipe {
   return {
-    id: faker.string.uuid(),
+    id: faker.number.int(),
     title: faker.commerce.productName(),
     bannerUrl: faker.image.urlPicsumPhotos({
       width: 1280,
@@ -59,10 +46,15 @@ export function generateRecipe(): Recipe {
       { length: faker.number.int({ min: 7, max: 10 }) },
       generateIngredient
     ),
-    indications: Array.from(
-      { length: faker.number.int({ min: 3, max: 3 }) },
-      generateIndication
-    ),
+    indications: {
+      prepTime: faker.number.int({ min: 5, max: 15 }),
+      cookTime: faker.number.int({ min: 10, max: 30 }),
+      difficulty: faker.string.fromCharacters(['easy', 'medium', 'hard']) as
+        | 'easy'
+        | 'medium'
+        | 'hard',
+      restTime: faker.number.int({ min: 30, max: 60 }),
+    },
     steps: Array.from(
       { length: faker.number.int({ min: 5, max: 10 }) },
       generateStep
@@ -72,7 +64,7 @@ export function generateRecipe(): Recipe {
       name: faker.person.fullName(),
       avatarUrl: faker.image.avatar(),
     },
-    vote_average: faker.number.float({ min: 1, max: 5, fractionDigits: 1 }),
+    voteAverage: faker.number.float({ min: 1, max: 5, fractionDigits: 1 }),
   };
 }
 

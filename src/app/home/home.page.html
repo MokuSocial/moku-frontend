@@ -8,7 +8,7 @@
         <div class="overlay">
           <div class="top-row">
             <div class="stars-badge">
-              @for(star of this.getStars(item.vote_average); track $index){
+              @for(star of this.getStars(item.voteAverage); track $index){
               <ion-icon [name]="star" class="star"></ion-icon>
               }
             </div>
