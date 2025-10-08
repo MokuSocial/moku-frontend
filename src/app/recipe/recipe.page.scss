@@ -1,3 +1,8 @@
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .recipe-banner {
   width: 100%;
   max-height: 300px;
@@ -58,8 +63,17 @@
   gap: 4px;
 }
 
+.servings-input {
+  max-width: 200px;
+  margin: 0 24px;
+}
+
+.section-separator {
+  border-bottom: #6c757d;
+}
+
 .steps-list {
-  margin-top: 24px;
+  margin: 12px 24px;
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -73,12 +87,12 @@
 
 .step-index {
   font-weight: bold;
-  color: #6c757d;
   min-width: 24px;
 }
 
 .step-description {
   flex: 1;
+  max-width: 650px;
 }
 
 .step-image {
