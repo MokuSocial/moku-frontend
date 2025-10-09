@@ -14,6 +14,10 @@ import {
 import { provideHttpClient } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
+import { provideApollo } from 'apollo-angular';
+import { inject } from '@angular/core';
+import { HttpLink } from 'apollo-angular/http';
+import { InMemoryCache } from '@apollo/client/core';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -25,5 +29,15 @@ bootstrapApplication(AppComponent, {
       withComponentInputBinding()
     ),
     provideHttpClient(),
+    provideApollo(() => {
+      const httpLink = inject(HttpLink);
+
+      return {
+        link: httpLink.create({
+          uri: '<%= endpoint %>',
+        }),
+        cache: new InMemoryCache(),
+      };
+    }),
   ],
 });
