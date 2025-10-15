@@ -1,0 +1,39 @@
+query Recipes {
+  recipes(id: 1) {
+    page
+    totalPages
+    totalResults
+    results {
+      id
+      userId
+      title
+      createdAt
+      ingredients {
+        quantity
+        unit
+        ingredient {
+          id
+          name
+          costPerUnit
+          unit
+        }
+      }
+      steps {
+        stepNumber
+        description
+        imageUrl
+      }
+    }
+  }
+}
+
+query Recipe {
+  recipe(id: 1) {
+    id
+    userId
+    title
+    introduction
+    conclusion
+    createdAt
+  }
+}

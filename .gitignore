@@ -52,6 +52,8 @@ yarn-error.log
 # !.vscode/extensions.json
 .history/*
 
+# Apollo Angular Generated
+*.generated.ts
 
 # Miscellaneous
 /.angular
