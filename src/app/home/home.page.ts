@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import {
   InfiniteScrollCustomEvent,
@@ -15,14 +16,13 @@ import {
   IonSkeletonText,
   IonText,
 } from '@ionic/angular/standalone';
-import { catchError, finalize } from 'rxjs';
-import { Recipe } from '../models/recipe.model';
-import { RecipeService } from '../services/recipe.service';
-import { range } from '../utils';
-
 import { addIcons } from 'ionicons';
 import { star, starHalf, starOutline } from 'ionicons/icons';
+import { map } from 'rxjs/operators';
 
+// Generated Imports
+import { RecipesGQL, RecipesQuery } from '../operations/recipe.generated';
+import { range } from '../utils';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -44,64 +44,83 @@ import { star, starHalf, starOutline } from 'ionicons/icons';
   ],
 })
 export class HomePage {
-  private readonly recipeService = inject(RecipeService);
-  private currentPage: number = 1;
-  public error = null;
-  public isLoading = false;
-  public recipes: Recipe[] = [];
-  public dummyArray = new Array(5);
+  private readonly recipesService = inject(RecipesGQL);
+  private readonly PAGE_SIZE = 10;
 
-  id = 1;
+  private queryRef = this.recipesService.watch({
+    first: this.PAGE_SIZE,
+    after: null,
+  });
+
+  public recipesResource = rxResource({
+    stream: () => this.queryRef.valueChanges.pipe(map((res) => res.data)),
+  });
+
+  public recipes = computed(() => {
+    return this.recipesResource.value()?.recipes?.nodes ?? [];
+  });
+
   constructor() {
-    this.loadRecipes();
     addIcons({ star, starHalf, starOutline });
   }
 
-  range = range;
+  /**
+   * Infinite Scroll Logic
+   */
+  async loadMore(event: InfiniteScrollCustomEvent) {
+    const currentData = this.recipesResource.value();
+    const pageInfo = currentData?.recipes?.pageInfo;
 
-  loadRecipes(event?: InfiniteScrollCustomEvent) {
-    this.error = null;
-
-    // Only show loading indicator on initial load
-    if (!event) {
-      this.isLoading = true;
+    // Check if there are more pages
+    if (!pageInfo?.hasNextPage || !pageInfo.endCursor) {
+      event.target.disabled = true;
+      event.target.complete();
+      return;
     }
 
-    // Get the next page of recipes from the RecipeService
-    this.recipeService
-      .getRecipes(this.currentPage)
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-        }),
-        catchError((err: any) => {
-          this.error = err.error.status_message;
-          return [];
-        })
-      )
-      .subscribe({
-        next: (res) => {
-          // Append the results to our recipes array
-          this.recipes.push(...res.results);
+    try {
+      // 4. Apollo Fetch More (Cursor Pagination)
+      await this.queryRef.fetchMore({
+        variables: {
+          first: this.PAGE_SIZE,
+          after: pageInfo.endCursor, // Pass the last cursor
+        },
+        // 5. Update Query Logic: Merge the new items with existing items
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
 
-          // Resolve the infinite scroll promise to tell Ionic that we are done
-          event?.target.complete();
-
-          // Disable the infinite scroll when we reach the end of the list
-          if (event) {
-            event.target.disabled = res.total_pages === this.currentPage;
-          }
+          return {
+            recipes: {
+              __typename: prev.recipes.__typename,
+              // Merge PageInfo (take the new one)
+              pageInfo: fetchMoreResult.recipes.pageInfo,
+              // Merge Edges (optional, but good practice)
+              edges: [
+                ...(prev.recipes.edges || []),
+                ...(fetchMoreResult.recipes.edges || []),
+              ],
+              // Merge Nodes (The actual data we display)
+              nodes: [
+                ...(prev.recipes.nodes || []),
+                ...(fetchMoreResult.recipes.nodes || []),
+              ],
+            },
+          };
         },
       });
+    } catch (err) {
+      console.error('Error loading more recipes', err);
+    } finally {
+      // Always complete the Ionic event
+      event.target.complete();
+    }
   }
 
-  // This method is called by the infinite scroll event handler
-  loadMore(event: InfiniteScrollCustomEvent) {
-    this.currentPage++;
-    this.loadRecipes(event);
-  }
+  // --- UI Helpers ---
 
-  getStars(vote: number): string[] {
+  protected readonly range = range;
+
+  getStars(vote = 0): string[] {
     const stars: string[] = [];
     const rating = Math.round(vote * 2) / 2;
 
@@ -114,7 +133,6 @@ export class HomePage {
         stars.push('star-outline');
       }
     }
-
     return stars;
   }
 }
