@@ -1,22 +1,30 @@
 <ion-content>
-  @if(recipe(); as recipe){
+  <!-- Loading -->
+  @if (recipeResource.isLoading()) {
+  <div class="ion-padding ion-text-center">
+    <ion-spinner></ion-spinner>
+    <p>Loading recipe...</p>
+  </div>
+  }
+
+  <!-- Content -->
+  @if(recipeResource.value(); as recipe){
 
   <img [src]="recipe.bannerUrl" class="recipe-banner" alt="Recipe cover" />
   <div class="main-container">
     <h1 class="recipe-title ion-text-center">{{ recipe.title }}</h1>
 
     <div class="ingredients-indications-row">
-      <!-- Ingredients column -->
       <div class="ingredients-col">
         <h2>Ingredients</h2>
         <div class="ingredients-grid">
           @for(column of ingredientColumns(); track $index) {
           <div class="ingredient-column">
-            @for (ingredient of column; track ingredient) {
+            @for (ingredient of column; track ingredient.id) {
             <div class="ingredient">
               <span class="ingredient-name">{{ ingredient.name }}</span>
               <ion-text color="medium">
-                {{ ingredient.quantity }} {{ ingredient.unit }}
+                {{ ingredient.quantity | number:'1.0-1' }} {{ ingredient.unit }}
               </ion-text>
             </div>
             }
@@ -24,17 +32,16 @@
           }
         </div>
       </div>
-      <!-- Indications column -->
+
       <div class="indications-col">
         <h2>Indications</h2>
         <div class="indications-list">
           @for (keypar of recipe.indications|keyvalue; track keypar.key) {
           <div class="indication">
             <span>{{ mapIndications(keypar.key)}}: </span>
-            <ion-text color="medium"
-              >{{ keypar.value }} {{keypar.key == "difficulty" ? "": "min"
-              }}</ion-text
-            >
+            <ion-text color="medium">
+              {{ keypar.value }} {{keypar.key == "difficulty" ? "": "min"}}
+            </ion-text>
           </div>
           }
         </div>
@@ -46,7 +53,7 @@
       type="number"
       min="1"
       class="servings-input"
-      [(ngModel)]="peopleCount"
+      [ngModel]="peopleCount()"
       (ionChange)="onPeopleCountChange($event)"
     ></ion-input>
 
@@ -56,7 +63,7 @@
       @for(step of recipe.steps; track $index) {
       <div class="step">
         <ion-text class="step-index" color="medium">{{ $index + 1 }}.</ion-text>
-        <div class="step-description">{{ step.text }}</div>
+        <div class="step-description">{{ step.description }}</div>
         @if (step.imageUrl) {
         <img [src]="step.imageUrl" class="step-image" alt="step {{$index+1}}" />
         }
@@ -64,5 +71,9 @@
       }
     </div>
   </div>
-  } @else { <ion-text>Loading...</ion-text> }
+
+  } @else if (recipeResource.error()) {
+  <!-- Error State -->
+  <ion-text color="danger">Error loading recipe.</ion-text>
+  }
 </ion-content>
