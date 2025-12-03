@@ -1,39 +1,30 @@
-query Recipes {
-  recipes(id: 1) {
-    page
-    totalPages
-    totalResults
-    results {
-      id
-      userId
-      title
-      createdAt
-      ingredients {
-        quantity
-        unit
-        ingredient {
-          id
-          name
-          costPerUnit
-          unit
-        }
-      }
-      steps {
-        stepNumber
-        description
-        imageUrl
-      }
-    }
-  }
-}
-
-query Recipe {
-  recipe(id: 1) {
+query Recipe($id: Int!) {
+  recipe(id: $id) {
     id
-    userId
     title
-    introduction
-    conclusion
-    createdAt
+    bannerUrl
+    servings
+    voteAverage
+    ingredients {
+      id
+      name
+      unit
+      quantity
+    }
+    indications {
+      prepTime
+      cookTime
+      restTime
+      difficulty
+    }
+    steps {
+      stepNumber
+      description
+      imageUrl
+    }
+    author {
+      name
+      avatarUrl
+    }
   }
 }

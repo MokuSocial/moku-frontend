@@ -1,54 +1,81 @@
-import { KeyValuePipe } from '@angular/common';
+import { DecimalPipe, KeyValuePipe } from '@angular/common';
 import {
   Component,
   computed,
   inject,
-  Input,
-  Signal,
-  signal,
-  WritableSignal,
+  input,
+  linkedSignal,
 } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { InputChangeEventDetail, InputCustomEvent } from '@ionic/angular';
-import { IonContent, IonInput, IonText } from '@ionic/angular/standalone';
-import { Ingredient, Recipe } from '../models/recipe.model';
-import { RecipeService } from '../services/recipe.service';
+import {
+  IonContent,
+  IonInput,
+  IonSpinner,
+  IonText,
+} from '@ionic/angular/standalone';
+import { map } from 'rxjs/operators';
+
+import { RecipeGQL, RecipeIngredient } from '../operations/recipe.generated';
 
 @Component({
   selector: 'app-recipe',
   templateUrl: 'recipe.page.html',
   styleUrls: ['recipe.page.scss'],
-  imports: [IonText, IonInput, IonContent, FormsModule, KeyValuePipe],
+  imports: [
+    IonSpinner,
+    IonText,
+    IonInput,
+    IonContent,
+    FormsModule,
+    KeyValuePipe,
+    DecimalPipe,
+  ],
 })
 export class RecipePage {
-  private readonly recipeService = inject(RecipeService);
-  public recipe: WritableSignal<Recipe | null> = signal(null);
-  public peopleCount: WritableSignal<number> = signal(
-    this.recipe()?.servings ?? 0
-  );
-  public scaledIngredients: Signal<Ingredient[]> = computed(() => {
-    const localRecipe = this.recipe();
+  private readonly recipeService = inject(RecipeGQL);
+
+  public id = input.required<string>();
+  public recipeResource = rxResource({
+    params: () => {
+      const idString = this.id();
+      const idInt = Number.parseInt(idString, 10);
+      return { id: Number.isNaN(idInt) ? 0 : idInt };
+    },
+
+    stream: ({ params }) =>
+      this.recipeService
+        .watch({ id: params.id })
+        .valueChanges.pipe(map((result) => result.data?.recipe)),
+  });
+
+  public peopleCount = linkedSignal<number>(() => {
+    const recipe = this.recipeResource.value();
+    return recipe?.servings ?? 0;
+  });
+
+  public scaledIngredients = computed(() => {
+    const localRecipe = this.recipeResource.value();
+    const count = this.peopleCount();
+
     if (!localRecipe) return [];
+
+    const baseServings = localRecipe.servings || 1;
+
     return localRecipe.ingredients.map((ingredient) => ({
       ...ingredient,
-      quantity:
-        (ingredient.quantity * this.peopleCount()) / localRecipe.servings,
+      quantity: (ingredient.quantity * count) / baseServings,
     }));
   });
 
-  public ingredientColumns: Signal<Ingredient[][]> = computed(() => {
+  public ingredientColumns = computed(() => {
     return this.splitIngredients(this.scaledIngredients(), 5);
   });
 
-  @Input()
-  set id(recipeId: string) {
-    this.recipeService.getRecipeById(recipeId).subscribe((recipe) => {
-      this.recipe.set(recipe);
-      this.peopleCount.set(recipe.servings);
-    });
-  }
+  // --- Helpers & Events ---
 
-  splitIngredients(ingredients: Ingredient[], columnSize: number) {
+  splitIngredients(ingredients: RecipeIngredient[], columnSize: number) {
     const columns = [];
     for (let i = 0; i < ingredients.length; i += columnSize) {
       columns.push(ingredients.slice(i, i + columnSize));
@@ -58,28 +85,21 @@ export class RecipePage {
 
   onPeopleCountChange(event: InputCustomEvent<InputChangeEventDetail>) {
     const inputValue = event.target.value;
-    if (typeof inputValue === 'number') this.peopleCount.set(inputValue);
-    else
-      this.peopleCount.update((value) =>
-        inputValue ? parseInt(inputValue, 10) : value
-      );
-  }
 
-  // 'prepTime' | 'cookTime' | 'difficulty' | 'restTime'
-  mapIndications(key: string) {
-    switch (key) {
-      case 'prepTime':
-        return 'Preparazione';
-      case 'cookTime':
-        return 'Cottura';
-      case 'difficulty':
-        return 'Difficoltà';
-      case 'restTime':
-        return 'Riposo';
-      default:
-        return 'Label';
+    if (typeof inputValue === 'number') {
+      this.peopleCount.set(inputValue);
+    } else if (inputValue) {
+      this.peopleCount.set(Number.parseInt(inputValue, 10));
     }
   }
 
-  constructor() {}
+  mapIndications(key: string) {
+    const labels: Record<string, string> = {
+      prepTime: 'Preparazione',
+      cookTime: 'Cottura',
+      difficulty: 'Difficoltà',
+      restTime: 'Riposo',
+    };
+    return labels[key] || 'Label';
+  }
 }
