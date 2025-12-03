@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiKey: 'YOUR_API_KEY_HERE',
+  gqlUri: 'http://moku-dev.chickenkiller.com/graphql',
 };
 
 /*
