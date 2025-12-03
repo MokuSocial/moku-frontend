@@ -18,6 +18,7 @@ import { provideApollo } from 'apollo-angular';
 import { inject } from '@angular/core';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
+import { environment } from './environments/environment';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -34,7 +35,7 @@ bootstrapApplication(AppComponent, {
 
       return {
         link: httpLink.create({
-          uri: '<%= endpoint %>',
+          uri: environment.gqlUri,
         }),
         cache: new InMemoryCache(),
       };
