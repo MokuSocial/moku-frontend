@@ -1,4 +1,4 @@
-import { DecimalPipe, KeyValuePipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import {
   Component,
   computed,
@@ -29,7 +29,6 @@ import { RecipeGQL, RecipeIngredient } from '../operations/recipe.generated';
     IonInput,
     IonContent,
     FormsModule,
-    KeyValuePipe,
     DecimalPipe,
   ],
 })
@@ -73,12 +72,29 @@ export class RecipePage {
     return this.splitIngredients(this.scaledIngredients(), 5);
   });
 
-  public indications = computed(() => {
+  private readonly indicationFields = [
+    { key: 'prepTime', label: 'Preparazione', unit: 'min' },
+    { key: 'cookTime', label: 'Cottura', unit: 'min' },
+    { key: 'restTime', label: 'Riposo', unit: 'min' },
+    { key: 'difficulty', label: 'Difficoltà', unit: '' },
+  ] as const;
+
+  public indicationList = computed(() => {
     const localIndications = this.recipeResource.value()?.indications;
 
     if (!localIndications) return [];
-
-    const filteredIndications = {};
+    return this.indicationFields
+      .map((field) => {
+        return {
+          label: field.label,
+          value: localIndications[field.key],
+          unit: field.unit,
+        };
+      })
+      .filter(
+        (item) =>
+          item.value != null && item.value != undefined && item.value != 0
+      );
   });
 
   // --- Helpers & Events ---
@@ -99,16 +115,5 @@ export class RecipePage {
     } else if (inputValue) {
       this.peopleCount.set(Number.parseInt(inputValue, 10));
     }
-  }
-
-  mapIndications(key: string) {
-    console.log(this.recipeResource.value()?.indications);
-    const labels: Record<string, string> = {
-      prepTime: 'Preparazione',
-      cookTime: 'Cottura',
-      difficulty: 'Difficoltà',
-      restTime: 'Riposo',
-    };
-    return labels[key] || 'Label';
   }
 }
