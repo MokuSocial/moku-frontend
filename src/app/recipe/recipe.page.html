@@ -37,13 +37,14 @@
         <h2>Indications</h2>
         <div class="indications-list">
           @for (keypar of recipe.indications|keyvalue; track keypar.key) {
+          @if(keypar.value && keypar.key != "__typename") {
           <div class="indication">
             <span>{{ mapIndications(keypar.key)}}: </span>
             <ion-text color="medium">
               {{ keypar.value }} {{keypar.key == "difficulty" ? "": "min"}}
             </ion-text>
           </div>
-          }
+          } }
         </div>
       </div>
     </div>

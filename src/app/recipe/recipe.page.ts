@@ -73,6 +73,14 @@ export class RecipePage {
     return this.splitIngredients(this.scaledIngredients(), 5);
   });
 
+  public indications = computed(() => {
+    const localIndications = this.recipeResource.value()?.indications;
+
+    if (!localIndications) return [];
+
+    const filteredIndications = {};
+  });
+
   // --- Helpers & Events ---
 
   splitIngredients(ingredients: RecipeIngredient[], columnSize: number) {
@@ -94,6 +102,7 @@ export class RecipePage {
   }
 
   mapIndications(key: string) {
+    console.log(this.recipeResource.value()?.indications);
     const labels: Record<string, string> = {
       prepTime: 'Preparazione',
       cookTime: 'Cottura',
