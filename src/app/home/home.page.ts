@@ -21,7 +21,8 @@ import { star, starHalf, starOutline } from 'ionicons/icons';
 import { map } from 'rxjs/operators';
 
 // Generated Imports
-import { RecipesGQL, RecipesQuery } from '../operations/recipe.generated';
+import { ImgFallbackDirective } from '../directives/img-fallback';
+import { RecipesGQL } from '../operations/recipe.generated';
 import { range } from '../utils';
 @Component({
   selector: 'app-home',
@@ -41,13 +42,14 @@ import { range } from '../utils';
     RouterModule,
     IonCard,
     IonText,
+    ImgFallbackDirective,
   ],
 })
 export class HomePage {
   private readonly recipesService = inject(RecipesGQL);
-  private readonly PAGE_SIZE = 10;
+  private readonly PAGE_SIZE = 3;
 
-  private queryRef = this.recipesService.watch({
+  private readonly queryRef = this.recipesService.watch({
     first: this.PAGE_SIZE,
     after: null,
   });
@@ -71,7 +73,6 @@ export class HomePage {
     const currentData = this.recipesResource.value();
     const pageInfo = currentData?.recipes?.pageInfo;
 
-    // Check if there are more pages
     if (!pageInfo?.hasNextPage || !pageInfo.endCursor) {
       event.target.disabled = true;
       event.target.complete();
@@ -79,13 +80,11 @@ export class HomePage {
     }
 
     try {
-      // 4. Apollo Fetch More (Cursor Pagination)
       await this.queryRef.fetchMore({
         variables: {
           first: this.PAGE_SIZE,
-          after: pageInfo.endCursor, // Pass the last cursor
+          after: pageInfo.endCursor,
         },
-        // 5. Update Query Logic: Merge the new items with existing items
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prev;
 
@@ -111,7 +110,6 @@ export class HomePage {
     } catch (err) {
       console.error('Error loading more recipes', err);
     } finally {
-      // Always complete the Ionic event
       event.target.complete();
     }
   }
