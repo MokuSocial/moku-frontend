@@ -91,14 +91,7 @@ export class HomePage {
           return {
             recipes: {
               __typename: prev.recipes.__typename,
-              // Merge PageInfo (take the new one)
               pageInfo: fetchMoreResult.recipes.pageInfo,
-              // Merge Edges (optional, but good practice)
-              edges: [
-                ...(prev.recipes.edges || []),
-                ...(fetchMoreResult.recipes.edges || []),
-              ],
-              // Merge Nodes (The actual data we display)
               nodes: [
                 ...(prev.recipes.nodes || []),
                 ...(fetchMoreResult.recipes.nodes || []),
