@@ -1,27 +1,27 @@
 <ion-content>
   <ion-list lines="none">
     <div class="container">
-      @for (item of recipes(); track item.id) {
-      <ion-card button [routerLink]="['/recipe', item.id]" class="recipe-card">
+      @for (recipe of recipes(); track recipe.id) {
+      <ion-card button [routerLink]="['/recipe', recipe.id]" class="recipe-card">
         <ion-img
-          [src]="item.bannerUrl || 'assets/images/placeholder.png'"
+          [src]="recipe.bannerUrl || 'assets/images/placeholder.png'"
           appImgFallback="assets/images/placeholder.png"
           class="card-bg"
         />
         <div class="overlay">
           <div class="top-row">
             <div class="stars-badge">
-              @for(star of this.getStars(item.voteAverage); track $index){
+              @for(star of this.getStars(recipe.voteAverage); track $index){
               <ion-icon [name]="star" class="star"></ion-icon>
               }
             </div>
           </div>
           <div class="bottom-row">
             <ion-text class="ion-text-start">
-              <h3>{{ item.title }}</h3>
+              <h3>{{ recipe.title }}</h3>
             </ion-text>
             <ion-text class="ion-text-end">
-              <p>{{ item.author.name }}</p>
+              <p>{{ recipe.author.name }}</p>
             </ion-text>
           </div>
         </div>

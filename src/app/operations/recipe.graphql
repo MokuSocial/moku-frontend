@@ -1,38 +1,16 @@
 query Recipes($first: Int, $after: String) {
   recipes(first: $first, after: $after) {
     pageInfo {
-      hasPreviousPage
       hasNextPage
-      startCursor
       endCursor
-    }
-    edges {
-      cursor
-      node {
-        id
-        title
-        bannerUrl
-        servings
-        voteAverage
-        votes
-        author {
-          username
-          name
-          avatarUrl
-        }
-      }
     }
     nodes {
       id
       title
       bannerUrl
-      servings
       voteAverage
-      votes
       author {
-        username
         name
-        avatarUrl
       }
     }
   }
