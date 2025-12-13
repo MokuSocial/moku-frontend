@@ -49,6 +49,8 @@ export class HomePage {
   private readonly recipesService = inject(RecipesGQL);
   private readonly PAGE_SIZE = 3;
 
+  private isFetchingMore = false;
+
   private readonly queryRef = this.recipesService.watch({
     first: this.PAGE_SIZE,
     after: null,
@@ -70,6 +72,10 @@ export class HomePage {
    * Infinite Scroll Logic
    */
   async loadMore(event: InfiniteScrollCustomEvent) {
+    if (this.isFetchingMore) {
+      return;
+    }
+
     const currentData = this.recipesResource.value();
     const pageInfo = currentData?.recipes?.pageInfo;
 
@@ -78,6 +84,8 @@ export class HomePage {
       event.target.complete();
       return;
     }
+
+    this.isFetchingMore = true;
 
     try {
       await this.queryRef.fetchMore({
@@ -103,6 +111,7 @@ export class HomePage {
     } catch (err) {
       console.error('Error loading more recipes', err);
     } finally {
+      this.isFetchingMore = false;
       event.target.complete();
     }
   }

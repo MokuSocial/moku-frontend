@@ -7,7 +7,7 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 export class ImgFallbackDirective {
   @Input() appImgFallback = 'assets/images/placeholder.png';
 
-  constructor(private el: ElementRef) {}
+  constructor(private readonly el: ElementRef) {}
 
   @HostListener('error')
   onError() {
