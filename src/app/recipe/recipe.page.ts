@@ -18,6 +18,7 @@ import {
 import { map } from 'rxjs/operators';
 
 import { RecipeGQL, RecipeIngredient } from '../operations/recipe.generated';
+import { ImgFallbackDirective } from '../directives/img-fallback';
 
 @Component({
   selector: 'app-recipe',
@@ -30,6 +31,7 @@ import { RecipeGQL, RecipeIngredient } from '../operations/recipe.generated';
     IonContent,
     FormsModule,
     DecimalPipe,
+    ImgFallbackDirective,
   ],
 })
 export class RecipePage {

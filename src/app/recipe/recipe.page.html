@@ -10,7 +10,12 @@
   <!-- Content -->
   @if(recipeResource.value(); as recipe){
 
-  <img [src]="recipe.bannerUrl" class="recipe-banner" alt="Recipe cover" />
+  <img
+    [src]="recipe.bannerUrl"
+    class="recipe-banner"
+    alt="Recipe cover"
+    appImgFallback="assets/images/placeholder.png"
+  />
   <div class="main-container">
     <h1 class="recipe-title ion-text-center">{{ recipe.title }}</h1>
 

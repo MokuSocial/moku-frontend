@@ -3,7 +3,11 @@
     <div class="container">
       @for (item of recipes(); track item.id) {
       <ion-card button [routerLink]="['/recipe', item.id]" class="recipe-card">
-        <ion-img [src]="item.bannerUrl" class="card-bg" />
+        <ion-img
+          [src]="item.bannerUrl || 'assets/images/placeholder.png'"
+          appImgFallback="assets/images/placeholder.png"
+          class="card-bg"
+        />
         <div class="overlay">
           <div class="top-row">
             <div class="stars-badge">
