@@ -17,8 +17,9 @@ import {
 } from '@ionic/angular/standalone';
 import { map } from 'rxjs/operators';
 
-import { RecipeGQL, RecipeIngredient } from '../operations/recipe.generated';
+import { RecipeGQL } from '../operations/recipe.generated';
 import { ImgFallbackDirective } from '../directives/img-fallback';
+import { RecipeIngredient } from 'src/types.generated';
 
 @Component({
   selector: 'app-recipe',
