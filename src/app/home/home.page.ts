@@ -19,11 +19,10 @@ import {
 import { addIcons } from 'ionicons';
 import { star, starHalf, starOutline } from 'ionicons/icons';
 import { map } from 'rxjs/operators';
-
-// Generated Imports
 import { ImgFallbackDirective } from '../directives/img-fallback';
-import { RecipesGQL } from '../operations/recipe.generated';
 import { range } from '../utils';
+import { RecipesGQL } from '../operations/recipe.generated';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -47,7 +46,7 @@ import { range } from '../utils';
 })
 export class HomePage {
   private readonly recipesService = inject(RecipesGQL);
-  private readonly PAGE_SIZE = 3;
+  private readonly PAGE_SIZE = 4;
 
   private isFetchingMore = false;
 
